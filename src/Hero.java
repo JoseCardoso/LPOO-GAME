@@ -1,19 +1,112 @@
+package com.jumpityJump.game;
 
 
-/**
- * @author José
- * @version 1.0
- * @created 14-mai-2014 18:13:47
- */
-public class Hero extends Creature {
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 
-	private char Power = n;
+public class Hero implements ContactListener{
 
-	public Hero(){
-
+	public Body body;
+	public Fixture fixture;
+	public float force=0;
+	public float cx,cy;
+	public float velocity = 20f;
+	public float upSpeed =30f;
+	public boolean jump =false;
+	
+	public Hero(World world, float cx, float cy) {
+		
+		this.cx = cx;
+		this.cy = cy;
+		
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.position.set(cx, cy);
+		bodyDef.fixedRotation =true;
+		
+		PolygonShape shape = new PolygonShape();
+		shape.setAsBox(1.0f,  1.5f);
+		
+		FixtureDef fixtureDef= new FixtureDef();
+		fixtureDef.shape = shape;
+		fixtureDef.restitution = 0.0f;
+		fixtureDef.friction = 1f;
+		fixtureDef.density = 8;
+		
+		body = world.createBody(bodyDef);
+		fixture = body.createFixture(fixtureDef);
 	}
 
-	public void finalize() throws Throwable {
-		super.finalize();
+	public Body getBody() {
+		return body;
 	}
-}//end Hero
+
+	@Override
+	public void beginContact(Contact contact) {
+		
+		Fixture FixtA = contact.getFixtureA();
+		Fixture FixtB = contact.getFixtureB();
+		
+		if (FixtA.getUserData() == "platform" || FixtB.getUserData() == "platform")
+			jump =  true;
+		
+	}
+
+	@Override
+	public void endContact(Contact contact) {
+	
+	}
+
+	@Override
+	public void preSolve(Contact contact, Manifold oldManifold) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void postSolve(Contact contact, ContactImpulse impulse) {
+		
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void update() {
+		
+		
+		if (Gdx.input.isKeyPressed(Input.Keys.UP)){
+			if(jump){
+			jump = false;
+			body.applyLinearImpulse(0.0f, 2500.0f ,body.getWorldCenter().x ,body.getWorldCenter().y, true);
+			if (body.getLinearVelocity().y > upSpeed)
+				body.setLinearVelocity(body.getLinearVelocity().x, upSpeed);
+			}
+		}
+		
+		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+			body.setLinearVelocity(-velocity, body.getLinearVelocity().y);
+		}
+	
+	if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+		body.setLinearVelocity(velocity, body.getLinearVelocity().y);
+	}
+	
+	
+	
+}
+	
+	
+}
+	
+	
+	
