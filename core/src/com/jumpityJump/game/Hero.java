@@ -3,6 +3,8 @@ package com.jumpityJump.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -23,13 +25,16 @@ public class Hero implements ContactListener{
 	public float cx,cy;
 	public float velocity = 20f;
 	public float upSpeed =30f;
+	public boolean withRune = false;
 	public boolean jump =false;
+	//Music mp3Music;
+	int timeRune = 0;
 	
 	public Hero(World world, float cx, float cy) {
 		
 		this.cx = cx;
 		this.cy = cy;
-		
+	//	mp3Music =  Gdx.audio.newMusic(Gdx.files.internal("SOMKEWEEDEVERYDAY.mp3"));
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(cx, cy);
@@ -61,6 +66,28 @@ public class Hero implements ContactListener{
 		if (FixtA.getUserData() == "platform" || FixtB.getUserData() == "platform")
 			jump =  true;
 		
+		if (FixtA.getUserData() == "exit" || FixtB.getUserData() == "exit")
+		{
+			jump =  true;
+			System.out.println("lol,n00b");
+		}
+		
+		if (FixtA.getUserData() == "rune" )
+		{
+			timeRune = 1000;
+			withRune = true;
+		}
+		
+		
+		if( FixtB.getUserData() == "rune"){
+			timeRune = 1000;
+			withRune = true;
+		}
+		
+	}
+
+	public boolean isWithRune() {
+		return withRune;
 	}
 
 	@Override
@@ -102,6 +129,22 @@ public class Hero implements ContactListener{
 	}
 	
 	
+	if(timeRune > 0)
+		timeRune--;
+	else if(timeRune == 0)
+		withRune = false;
+	
+	
+	if(withRune)
+	{
+	//	mp3Music.play();
+	//	mp3Music.setVolume(1.0f);
+	}
+	else{}
+		//mp3Music.stop();
+		
+		//System.out.println(timeRune);
+		
 	
 }
 	

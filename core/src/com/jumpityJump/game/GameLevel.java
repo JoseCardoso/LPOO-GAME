@@ -20,6 +20,7 @@ public class GameLevel implements Screen{
 	private Hero box;
 	private ArrayList <Platform> plats= new ArrayList<Platform>();
 	private ArrayList <Platform> walls= new ArrayList<Platform>();
+	private ArrayList <Rune> runes = new ArrayList<Rune>();
 	private Platform floor;
 	private final float TIMESTEP = 1/60f;
 	private final int VelocityIterations = 8, PositionIterations = 3;
@@ -61,13 +62,13 @@ public class GameLevel implements Screen{
 		plats.add(new Platform(world,15 , 10, 1, 3));
 		plats.add(new Platform(world,0, -10, 1, 3));
 		plats.add(new Platform(world,15 , -15, 1, 3));
-		plats.add(new Platform(world,0 ,5, 1, 3));
+		plats.add(new Exit(world,0 ,5, 1, 3));
 		plats.add(new Platform(world, -15 , -15, 1, 3));
 		plats.add(new Platform(world,-15 , 10, 1, 3));
 		walls.add(new Platform (world, -25 , 0, 35, 1));
 		walls.add(new Platform (world, 25 , 0, 35, 1));
 		walls.add(new Platform (world, 0 ,25, 2, 35));
-		
+		runes.add(new Rune(world,0, -7, 0.5f));
 		
 	}
 
