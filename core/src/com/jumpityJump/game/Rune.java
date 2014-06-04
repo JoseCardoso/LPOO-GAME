@@ -23,7 +23,7 @@ public class Rune {
 		this.cy = cy;
 		
 		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyType.StaticBody;
+		bodyDef.type = BodyType.KinematicBody;
 		bodyDef.position.set(cx, cy);
 		
 		CircleShape shape = new CircleShape();

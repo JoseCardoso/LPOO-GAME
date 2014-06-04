@@ -21,6 +21,7 @@ public class GameLevel implements Screen{
 	private ArrayList <Platform> plats= new ArrayList<Platform>();
 	private ArrayList <Platform> walls= new ArrayList<Platform>();
 	private ArrayList <Rune> runes = new ArrayList<Rune>();
+	private ArrayList <Monster> monsters = new ArrayList<Monster>();
 	private Platform floor;
 	private final float TIMESTEP = 1/60f;
 	private final int VelocityIterations = 8, PositionIterations = 3;
@@ -34,6 +35,7 @@ public class GameLevel implements Screen{
 		world.step(TIMESTEP, VelocityIterations, PositionIterations);
 		
 		debugRenderer.render(world, camera.combined);
+		monsters.listIterator().next().update();
 		box.update();
 		camera.update();
 	}
@@ -68,8 +70,17 @@ public class GameLevel implements Screen{
 		walls.add(new Platform (world, -25 , 0, 35, 1));
 		walls.add(new Platform (world, 25 , 0, 35, 1));
 		walls.add(new Platform (world, 0 ,25, 2, 35));
-		runes.add(new Rune(world,0, -7, 0.5f));
-		
+		if(box.isWithRune())
+		{
+			world.destroyBody(runes.listIterator().next().body);
+			runes.listIterator().next().body.destroyFixture(null);
+			runes.listIterator().next().body.setUserData(null);
+			runes.listIterator().next().body = null;
+			runes.clear();
+		}
+		else
+			runes.add(new Rune(world,0, -7, 0.5f));
+		monsters.add(new Monster(world, 15, 12.5f, 2f, 2f));
 	}
 
 	@Override
