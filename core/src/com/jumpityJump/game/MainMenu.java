@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
-public class MainMenu implements Screen {
-	
+public class MainMenu/* implements Screen*/ {
+	/*
 	private Box2DDebugRenderer debugRenderer;
 	private OrthographicCamera camera;
 	private final float TIMESTEP = 1/60f;
@@ -67,6 +67,6 @@ public class MainMenu implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub*/
 		
 	}
