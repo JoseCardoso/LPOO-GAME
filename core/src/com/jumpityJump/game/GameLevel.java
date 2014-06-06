@@ -5,14 +5,11 @@ import java.util.ArrayList;
 
 
 
-import java.util.Stack;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -28,12 +25,11 @@ public class GameLevel implements Screen{
 	private ArrayList <Monster> monsters = new ArrayList<Monster>();
 	private String keyToDelete ="";
 	private String runeToDelete ="";
+	private String monsterToDelete ="";
 	private Key[] keys = new Key[3];
-	private Platform floor;
 	private final float TIMESTEP = 1/60f;
 	private final int VelocityIterations = 8, PositionIterations = 3;
 	boolean destroyedRune =false;
-	private Integer runeCount;
 
 
 	@Override
@@ -48,11 +44,41 @@ public class GameLevel implements Screen{
 
 		if(!keyToDelete.isEmpty())//há uma chave para apagar
 			updateKeys();
-
+		updateMonsters();
 		debugRenderer.render(world, camera.combined);
-		monsters.listIterator().next().update();
 		box.update();
 		camera.update();
+	}
+
+
+	private void updateMonsters() {
+		// TODO Auto-generated method stub
+			
+		for(int i = 0; i < monsters.size();i++)
+		{
+			String t = monsters.listIterator(i).next().body.getUserData() + "";
+			if(t.equals(monsterToDelete))
+			{
+				if(box.isDoubleDamage())//para o caso do heroi estar com uma rune de dano duplo
+					monsters.listIterator(i).next().decHP();
+				if(monsters.listIterator(i).next().getHitPoints() >1)
+				{
+					monsters.listIterator(i).next().decHP();
+					monsters.listIterator(i).next().update();
+				}
+				else
+				{
+					world.destroyBody(monsters.listIterator(i).next().body);
+					monsters.listIterator(i).next().body.setUserData(null);
+					monsters.listIterator(i).next().body = null;
+					monsters.remove(i);
+					break;
+				}
+			}
+			else
+				monsters.listIterator(i).next().update();
+		}
+		monsterToDelete = "";
 	}
 
 
@@ -67,12 +93,11 @@ public class GameLevel implements Screen{
 				runes.listIterator().next().body = null;
 				runes.clear();
 				destroyedRune = true;
-				runeCount += 1;
 			}
 		}
 		else if(runes.isEmpty())
 		{
-			runes.add(new Rune(world,0, -7, 0.5f,runeCount.toString()));
+			runes.add(new Rune(world,0, -7, 0.5f));
 			destroyedRune = false;
 		}
 		else
@@ -126,16 +151,14 @@ public class GameLevel implements Screen{
 
 	@Override
 	public void show() {
-		
-		runeCount = 0;
 		world = new World(new Vector2(0,-40.0f), true);
-		
+
 		debugRenderer = new Box2DDebugRenderer();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth() /10, Gdx.graphics.getHeight()/10 );
 		box =new Hero(world, 0, 0,this);
 		box.getBody().setActive(true);
 		world.setContactListener(box);
-		floor = new Platform(world, 0,-25, 2, 35);
+		plats.add(new Platform(world, 0,-25, 2, 35));
 		plats.add(new Platform(world,15 , 10, 1, 3));
 		plats.add(new Platform(world,0, -10, 1, 3));
 		plats.add(new Platform(world,15 , -15, 1, 3));
@@ -145,12 +168,13 @@ public class GameLevel implements Screen{
 		walls.add(new Platform (world, -25 , 0, 35, 1));
 		walls.add(new Platform (world, 25 , 0, 35, 1));
 		walls.add(new Platform (world, 0 ,25, 2, 35));
-		runes.add(new Rune(world,0, -7, 0.5f,runeCount.toString()));
+		runes.add(new Rune(world,0, -7, 0.5f));
 		keys[0] = new Key(world,15, -12, 0.5f,"1");
 		keys[1] = new Key(world,-15, -12, 0.5f,"2");
 		keys[2] = new Key(world,-15, 12, 0.5f,"3");
 
 		monsters.add(new Monster(world, 15, 12.5f, 2f, 2f));
+		monsters.add(new Monster(world, -15, 12.5f, 2f, 2f));
 	}
 
 	@Override
@@ -186,7 +210,12 @@ public class GameLevel implements Screen{
 	public void setRuneToDelete(String runeToDelete) {
 		this.runeToDelete = runeToDelete;
 	}
-	
-	
+
+
+	public void setMonsterToDelete(String monsterToDelete) {
+		this.monsterToDelete = monsterToDelete;
+	}
+
+
 
 }

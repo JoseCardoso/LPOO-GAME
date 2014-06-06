@@ -1,6 +1,6 @@
 package com.jumpityJump.game;
 
-import java.util.Random;
+
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;

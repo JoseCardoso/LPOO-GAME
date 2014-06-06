@@ -3,8 +3,6 @@ package com.jumpityJump.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -32,9 +30,11 @@ public class Hero implements ContactListener{
 	private int KeyCount = 0;
 	private int hitPoints;
 	GameLevel gameLevel;
-
+	private boolean invunerable, doubleDamage;
 
 	public Hero(World world, float cx, float cy,GameLevel gameLevel) {
+		invunerable = false;
+		doubleDamage = false;
 
 		this.cx = cx;
 		this.cy = cy;
@@ -54,7 +54,6 @@ public class Hero implements ContactListener{
 		fixtureDef.restitution = 0.0f;
 		fixtureDef.friction = 1f;
 		fixtureDef.density = 8;
-
 		body = world.createBody(bodyDef);
 		fixture = body.createFixture(fixtureDef);
 	}
@@ -69,11 +68,11 @@ public class Hero implements ContactListener{
 		Fixture FixtA = contact.getFixtureA();
 		Fixture FixtB = contact.getFixtureB();
 
-		
+
 		String FixtAString = ((String) FixtA.getUserData()) +"";//estas aspas servem para clonar a string, evitando que esta variável fique a apontar para um vazio
 		String FixtBString = ((String) FixtB.getUserData()) +"";
-		
-		
+
+
 		if (FixtA.getUserData() == "platform" || FixtB.getUserData() == "platform")
 			jump =  true;
 
@@ -85,14 +84,14 @@ public class Hero implements ContactListener{
 
 		else if (FixtAString.startsWith("rune"))
 		{
-			timeRune = 100;
+			timeRune = 1000;
 			withRune = true;
 			processRune(FixtAString);
 			gameLevel.setRuneToDelete(FixtAString);
 		}
 		else if( FixtBString.startsWith("rune"))
 		{
-			timeRune = 100;
+			timeRune = 1000;
 			withRune = true;
 			processRune(FixtBString);
 			gameLevel.setRuneToDelete(FixtBString);
@@ -111,14 +110,30 @@ public class Hero implements ContactListener{
 		}
 		else if ( FixtAString.startsWith("monster"))
 		{
-			hitPoints--;
-			//gameLevel.setMonsterToaAtack(FixtAString);
+			if(FixtA.getBody().getPosition().y +2 > FixtB.getBody().getPosition().y)
+			{
+				if(!invunerable)
+					hitPoints--;
+			}
+			else
+				gameLevel.setMonsterToDelete(FixtAString);
 		}
 
 		else if( FixtBString.startsWith("monster"))
 		{
-			hitPoints--;
-			//gameLevel.setMonsterToAtack( FixtBString);
+			if(FixtB.getBody().getPosition().y +2 > FixtA.getBody().getPosition().y)
+			{
+				if(!invunerable){
+					System.out.println("hit");
+					hitPoints--;
+				}
+			}
+			else
+			{
+				gameLevel.setMonsterToDelete(FixtBString);
+			}
+
+			jump=true;
 		}
 
 		if(hitPoints <=0)
@@ -128,29 +143,40 @@ public class Hero implements ContactListener{
 
 	private void processRune(String rune)//process each power received by the hero
 	{
-		if(rune.endsWith("Acceleration Boost"))
+		System.out.println(rune);
+		if(rune.contains("Acceleration Boost"))
 		{
 			velocity = 40f;
 			upSpeed =60f;
 		}
-	//	else if(rune.endsWith("Stealth"))
-			
-		
+		else if(rune.contains("Invulnerability"))
+		{
+			invunerable = true;
+		}
+		else if(rune.contains("Double Damage"))
+		{
+			doubleDamage = true;
+		}
+
+
+
 	}
-	
+
 	public void endRune()
 	{
 		upSpeed =30f;
 		velocity = 20f;
+		invunerable = false;
+		doubleDamage = false;
 	}
-	
+
 	public boolean isWithRune() {
 		return withRune;
 	}
 
 	@Override
 	public void endContact(Contact contact) {
-
+		jump=false;
 	}
 
 	@Override
@@ -200,14 +226,17 @@ public class Hero implements ContactListener{
 		}
 		else{}
 		//mp3Music.stop();
-
-
 	}
 
 	public int getKeyCount() {
 		return KeyCount;
 	}
 
+	public boolean isDoubleDamage() {
+		return doubleDamage;
+	}
+
+	
 
 }
 

@@ -1,7 +1,6 @@
 package com.jumpityJump.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -50,7 +49,7 @@ public class Monster {
 		body = world.createBody(bodyDef);
 		fixture = body.createFixture(fixtureDef);
 		fixture.setUserData(name);
-
+		body.setUserData(name);
 	}
 
 	public void update() {
@@ -69,5 +68,16 @@ public class Monster {
 
 		body.setTransform(cx, cy, 0);
 	}
+	
+	public void decHP()
+	{
+		hitPoints--;
+	}
+
+	public int getHitPoints() {
+		return hitPoints;
+	}
+	
+	
 
 }

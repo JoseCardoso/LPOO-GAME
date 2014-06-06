@@ -16,14 +16,14 @@ public class Rune {
 	Fixture fixture;
 	float cx,cy;
 	private String type,name;
+	private static Integer count =0;
 	
-	public Rune(World world, float cx, float cy, float radius, String type, String name) {
+	public Rune(World world, float cx, float cy, float radius, String type) {
 		this.type = type;
 		this.cx = cx;
 		this.cy = cy;
-		this.name = "rune" +name;
-		this.name += type;
-		
+		this.name = "rune" + type;
+		count++;
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.KinematicBody;
 		bodyDef.position.set(cx, cy);
@@ -41,15 +41,18 @@ public class Rune {
 		body = world.createBody(bodyDef);	
 		fixture = body.createFixture(fixtureDef);
 		fixture.setUserData(this.name);
+		body.setUserData(this.name);
 	}
 	
-	public Rune(World world, float cx, float cy, float radius,String name) {
+	public Rune(World world, float cx, float cy, float radius) {
 
+		
 		type = randomType();
 		this.cx = cx;
 		this.cy = cy;
-		this.name = "rune" +name;
-		this.name += type;
+		this.name = "rune" + type;
+		count++;
+		this.name += count.toString();
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
@@ -68,13 +71,14 @@ public class Rune {
 		body = world.createBody(bodyDef);	
 		fixture = body.createFixture(fixtureDef);
 		fixture.setUserData(this.name);
+		body.setUserData(this.name);
 	}
 
 	private String randomType() {
 		// TODO Auto-generated method stub
 		Random r = new Random();
-		int choice = r.nextInt() %5;
-		
+		int choice = r.nextInt(3);
+		System.out.println(choice);
 		switch (choice)
 		{
 		case 0:
@@ -82,10 +86,6 @@ public class Rune {
 		case 1:
 			return "Double Damage";
 		case 2:
-			return "Ranged Atack";
-		case 3:
-			return "Stealth";
-		case 4:
 			return "Invulnerability";
 		}
 		

@@ -1,5 +1,5 @@
 package com.jumpityJump.game;
-
+/*
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -7,7 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-
+*/
 public class MainMenu/* implements Screen*/ {
 	/*
 	private Box2DDebugRenderer debugRenderer;
