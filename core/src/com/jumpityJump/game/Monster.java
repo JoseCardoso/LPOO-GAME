@@ -16,10 +16,17 @@ public class Monster {
 	public Fixture fixture;
 	public float cx,cy, rangeLeft, rangeRight;
 	private boolean goingLeft;
-
+	private Integer myCount;
+	private String name;
+	private int hitPoints;
+	static int count = 0;
 
 	Monster(World world, float cx, float cy, float rangeLeft, float rangeRight)
 	{
+		count++;
+		myCount = count;
+		name = "monster" + myCount.toString();
+		hitPoints = 2;
 		this.cx = cx;
 		this.cy = cy;
 		this.rangeLeft = cx - rangeLeft;
@@ -42,6 +49,7 @@ public class Monster {
 
 		body = world.createBody(bodyDef);
 		fixture = body.createFixture(fixtureDef);
+		fixture.setUserData(name);
 
 	}
 

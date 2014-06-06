@@ -30,6 +30,7 @@ public class Hero implements ContactListener{
 	//Music mp3Music;
 	private int timeRune = 0;
 	private int KeyCount = 0;
+	private int hitPoints;
 	GameLevel gameLevel;
 
 
@@ -38,6 +39,7 @@ public class Hero implements ContactListener{
 		this.cx = cx;
 		this.cy = cy;
 		this.gameLevel = gameLevel;
+		hitPoints=4;
 		//	mp3Music =  Gdx.audio.newMusic(Gdx.files.internal("SOMKEWEEDEVERYDAY.mp3"));
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
@@ -68,6 +70,9 @@ public class Hero implements ContactListener{
 		Fixture FixtB = contact.getFixtureB();
 
 		
+		String FixtAString = ((String) FixtA.getUserData()) +"";//estas aspas servem para clonar a string, evitando que esta variável fique a apontar para um vazio
+		String FixtBString = ((String) FixtB.getUserData()) +"";
+		
 		
 		if (FixtA.getUserData() == "platform" || FixtB.getUserData() == "platform")
 			jump =  true;
@@ -78,32 +83,67 @@ public class Hero implements ContactListener{
 			System.out.println("lol,n00b");
 		}
 
-		else if (FixtA.getUserData() == "rune"  )
+		else if (FixtAString.startsWith("rune"))
 		{
 			timeRune = 100;
 			withRune = true;
+			processRune(FixtAString);
+			gameLevel.setRuneToDelete(FixtAString);
 		}
-		else if( FixtB.getUserData() == "rune" )
+		else if( FixtBString.startsWith("rune"))
 		{
 			timeRune = 100;
 			withRune = true;
+			processRune(FixtBString);
+			gameLevel.setRuneToDelete(FixtBString);
 		}
 
-		else if ( FixtA.getUserData() == "key")
+		else if ( FixtAString.startsWith("key"))
 		{
 			KeyCount++;
-			gameLevel.addKeytoDelete("key");
+			gameLevel.setKeyToDelete(FixtAString);
 		}
 
-	/*	else if( FixtB.getUserData() == "key" )
+		else if( FixtBString.startsWith("key"))
 		{
 			KeyCount++;
-			gameLevel.addKeytoDelete( "");
-		}*/
+			gameLevel.setKeyToDelete( FixtBString);
+		}
+		else if ( FixtAString.startsWith("monster"))
+		{
+			hitPoints--;
+			//gameLevel.setMonsterToaAtack(FixtAString);
+		}
 
+		else if( FixtBString.startsWith("monster"))
+		{
+			hitPoints--;
+			//gameLevel.setMonsterToAtack( FixtBString);
+		}
+
+		if(hitPoints <=0)
+			System.out.println("dead");
 	}
 
 
+	private void processRune(String rune)//process each power received by the hero
+	{
+		if(rune.endsWith("Acceleration Boost"))
+		{
+			velocity = 40f;
+			upSpeed =60f;
+		}
+	//	else if(rune.endsWith("Stealth"))
+			
+		
+	}
+	
+	public void endRune()
+	{
+		upSpeed =30f;
+		velocity = 20f;
+	}
+	
 	public boolean isWithRune() {
 		return withRune;
 	}
@@ -162,6 +202,10 @@ public class Hero implements ContactListener{
 		//mp3Music.stop();
 
 
+	}
+
+	public int getKeyCount() {
+		return KeyCount;
 	}
 
 

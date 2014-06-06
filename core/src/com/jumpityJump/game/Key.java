@@ -60,6 +60,7 @@ public class Key {
 		body = world.createBody(bodyDef);	
 		fixture = body.createFixture(fixtureDef);
 		fixture.setUserData(this.name);
+		body.setUserData(this.name);
 	}
 	
 }

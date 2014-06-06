@@ -15,12 +15,14 @@ public class Rune {
 	public Body body;
 	Fixture fixture;
 	float cx,cy;
-	String type;
+	private String type,name;
 	
-	public Rune(World world, float cx, float cy, float radius, String type) {
+	public Rune(World world, float cx, float cy, float radius, String type, String name) {
 		this.type = type;
 		this.cx = cx;
 		this.cy = cy;
+		this.name = "rune" +name;
+		this.name += type;
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.KinematicBody;
@@ -38,15 +40,16 @@ public class Rune {
 		
 		body = world.createBody(bodyDef);	
 		fixture = body.createFixture(fixtureDef);
-		fixture.setUserData("rune");
+		fixture.setUserData(this.name);
 	}
 	
-	public Rune(World world, float cx, float cy, float radius) {
-
+	public Rune(World world, float cx, float cy, float radius,String name) {
 
 		type = randomType();
 		this.cx = cx;
 		this.cy = cy;
+		this.name = "rune" +name;
+		this.name += type;
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
@@ -64,7 +67,7 @@ public class Rune {
 		
 		body = world.createBody(bodyDef);	
 		fixture = body.createFixture(fixtureDef);
-		fixture.setUserData("rune");
+		fixture.setUserData(this.name);
 	}
 
 	private String randomType() {
@@ -87,6 +90,22 @@ public class Rune {
 		}
 		
 		return null;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	
