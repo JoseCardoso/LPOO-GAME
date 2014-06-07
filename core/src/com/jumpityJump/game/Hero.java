@@ -84,7 +84,6 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 		Fixture FixtA = contact.getFixtureA();
 		Fixture FixtB = contact.getFixtureB();
 
-
 		String FixtAString = ((String) FixtA.getUserData()) +"";//estas aspas servem para clonar a string, evitando que esta variável fique a apontar para um vazio
 		String FixtBString = ((String) FixtB.getUserData()) +"";
 
@@ -123,6 +122,7 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 		}
 		else if ( FixtAString.startsWith("monster"))
 		{
+			Gdx.input.vibrate(10);
 			if(FixtA.getBody().getPosition().y +2 > FixtB.getBody().getPosition().y)
 			{
 				if(!invunerable)
@@ -134,6 +134,7 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 
 		else if( FixtBString.startsWith("monster"))
 		{
+			Gdx.input.vibrate(10);
 			if(FixtB.getBody().getPosition().y +2 > FixtA.getBody().getPosition().y)
 			{
 				if(!invunerable){
@@ -217,6 +218,11 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 
 	public void update() {
 
+		float accelZ = Gdx.input.getAccelerometerZ();
+		if(accelZ < 0)
+			body.setLinearVelocity(-velocity, body.getLinearVelocity().y);
+		else if(accelZ > 0)
+			body.setLinearVelocity(-velocity, body.getLinearVelocity().y);
 
 		if (Gdx.input.isKeyPressed(Input.Keys.UP))
 		{
