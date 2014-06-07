@@ -19,9 +19,11 @@ public class Monster {
 	private String name;
 	private int hitPoints;
 	static int count = 0;
+	private boolean negativeCoords;
 
 	Monster(World world, float cx, float cy, float rangeLeft, float rangeRight)
 	{
+		negativeCoords = (cx < 0);
 		count++;
 		myCount = count;
 		name = "monster" + myCount.toString();
@@ -42,7 +44,7 @@ public class Monster {
 
 		FixtureDef fixtureDef= new FixtureDef();
 		fixtureDef.shape = shape;
-		fixtureDef.restitution = 0.0f;
+		fixtureDef.restitution = 0.8f;
 		fixtureDef.friction = 1f;
 		fixtureDef.density = 8;
 
@@ -55,7 +57,9 @@ public class Monster {
 	public void update() {
 
 		float inc = (rangeRight + rangeLeft)/1000;
-
+		if(negativeCoords)
+			inc *=-1;
+		
 		if(cx <= rangeLeft)
 			goingLeft = false;
 		else if(cx >= rangeRight)

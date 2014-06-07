@@ -73,15 +73,12 @@ public class Hero implements ContactListener{
 		String FixtBString = ((String) FixtB.getUserData()) +"";
 
 
-		if (FixtA.getUserData() == "platform" || FixtB.getUserData() == "platform")
-			jump =  true;
+		jump=true;
 
-		else if (FixtA.getUserData() == "exit" || FixtB.getUserData() == "exit")
-		{
-			jump =  true;
+		if (FixtA.getUserData() == "exit" || FixtB.getUserData() == "exit")
+		{	
 			System.out.println("lol,n00b");
 		}
-
 		else if (FixtAString.startsWith("rune"))
 		{
 			timeRune = 1000;
@@ -132,8 +129,6 @@ public class Hero implements ContactListener{
 			{
 				gameLevel.setMonsterToDelete(FixtBString);
 			}
-
-			jump=true;
 		}
 
 		if(hitPoints <=0)
@@ -175,8 +170,20 @@ public class Hero implements ContactListener{
 	}
 
 	@Override
-	public void endContact(Contact contact) {
-		jump=false;
+	public void endContact(Contact contact) 
+	{
+
+		Fixture FixtA = contact.getFixtureA();
+		Fixture FixtB = contact.getFixtureB();
+
+		if (FixtA.getUserData() == "exit" || FixtB.getUserData() == "exit")
+		{	
+			jump=false;
+		}
+		else if (FixtA.getUserData() == "platform" || FixtB.getUserData() == "platform")
+		{	
+			jump=false;
+		}
 	}
 
 	@Override
@@ -236,7 +243,7 @@ public class Hero implements ContactListener{
 		return doubleDamage;
 	}
 
-	
+
 
 }
 

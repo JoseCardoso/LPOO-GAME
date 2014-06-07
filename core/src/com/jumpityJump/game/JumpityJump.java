@@ -47,9 +47,8 @@ public class JumpityJump extends Game {
 	
 	@Override
 	public void create () {
+		setScreen(new Splash());
 		
-		
-		setScreen(new GameLevel());
 	}
 
 	@Override

@@ -63,7 +63,7 @@ public class Rune {
 		
 		FixtureDef fixtureDef= new FixtureDef();
 		fixtureDef.shape = shape;
-		fixtureDef.restitution = 0.0f;
+		fixtureDef.restitution = 0.2f;
 		fixtureDef.friction =0;
 		fixtureDef.density = 0;
 		
@@ -78,7 +78,6 @@ public class Rune {
 		// TODO Auto-generated method stub
 		Random r = new Random();
 		int choice = r.nextInt(3);
-		System.out.println(choice);
 		switch (choice)
 		{
 		case 0:

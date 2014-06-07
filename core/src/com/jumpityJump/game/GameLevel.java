@@ -15,21 +15,21 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class GameLevel implements Screen{
 
-	private World world;
+	protected World world;
 	private Box2DDebugRenderer debugRenderer;
 	private OrthographicCamera camera;
-	private Hero box;
-	private ArrayList <Platform> plats= new ArrayList<Platform>();
-	private ArrayList <Platform> walls= new ArrayList<Platform>();
-	private ArrayList <Rune> runes = new ArrayList<Rune>();
-	private ArrayList <Monster> monsters = new ArrayList<Monster>();
-	private String keyToDelete ="";
-	private String runeToDelete ="";
-	private String monsterToDelete ="";
-	private Key[] keys = new Key[3];
-	private final float TIMESTEP = 1/60f;
-	private final int VelocityIterations = 8, PositionIterations = 3;
-	boolean destroyedRune =false;
+	protected Hero box;
+	protected ArrayList <Platform> plats= new ArrayList<Platform>();
+	protected ArrayList <Platform> walls= new ArrayList<Platform>();
+	protected ArrayList <Rune> runes = new ArrayList<Rune>();
+	protected ArrayList <Monster> monsters = new ArrayList<Monster>();
+	protected String keyToDelete ="";
+	protected String runeToDelete ="";
+	protected String monsterToDelete ="";
+	protected Key[] keys = new Key[3];
+	protected final float TIMESTEP = 1/60f;
+	protected final int VelocityIterations = 8, PositionIterations = 3;
+	protected boolean destroyedRune =false;
 
 
 	@Override
@@ -84,24 +84,6 @@ public class GameLevel implements Screen{
 
 	void updateRunes()
 	{
-		if(box.isWithRune() )
-		{
-			if(!destroyedRune)
-			{
-				world.destroyBody(runes.listIterator().next().body);
-				runes.listIterator().next().body.setUserData(null);
-				runes.listIterator().next().body = null;
-				runes.clear();
-				destroyedRune = true;
-			}
-		}
-		else if(runes.isEmpty())
-		{
-			runes.add(new Rune(world,0, -7, 0.5f));
-			destroyedRune = false;
-		}
-		else
-			box.endRune();
 
 	}
 
@@ -155,26 +137,6 @@ public class GameLevel implements Screen{
 
 		debugRenderer = new Box2DDebugRenderer();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth() /10, Gdx.graphics.getHeight()/10 );
-		box =new Hero(world, 0, 0,this);
-		box.getBody().setActive(true);
-		world.setContactListener(box);
-		plats.add(new Platform(world, 0,-25, 2, 35));
-		plats.add(new Platform(world,15 , 10, 1, 3));
-		plats.add(new Platform(world,0, -10, 1, 3));
-		plats.add(new Platform(world,15 , -15, 1, 3));
-		plats.add(new Exit(world,0 ,5, 1, 3));
-		plats.add(new Platform(world, -15 , -15, 1, 3));
-		plats.add(new Platform(world,-15 , 10, 1, 3));
-		walls.add(new Platform (world, -25 , 0, 35, 1));
-		walls.add(new Platform (world, 25 , 0, 35, 1));
-		walls.add(new Platform (world, 0 ,25, 2, 35));
-		runes.add(new Rune(world,0, -7, 0.5f));
-		keys[0] = new Key(world,15, -12, 0.5f,"1");
-		keys[1] = new Key(world,-15, -12, 0.5f,"2");
-		keys[2] = new Key(world,-15, 12, 0.5f,"3");
-
-		monsters.add(new Monster(world, 15, 12.5f, 2f, 2f));
-		monsters.add(new Monster(world, -15, 12.5f, 2f, 2f));
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public class Key {
 		
 		FixtureDef fixtureDef= new FixtureDef();
 		fixtureDef.shape = shape;
-		fixtureDef.restitution = 0.0f;
+		fixtureDef.restitution = 0.1f;
 		fixtureDef.friction =0;
 		fixtureDef.density = 0;
 		
