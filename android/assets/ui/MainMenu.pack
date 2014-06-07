@@ -1,0 +1,19 @@
+
+MainMenu.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+simplePressed
+  rotate: false
+  xy: 0, 0
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+simpleUnPressed
+  rotate: false
+  xy: 9, 0
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
