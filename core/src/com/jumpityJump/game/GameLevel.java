@@ -160,7 +160,7 @@ public class GameLevel implements Screen{
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-
+		box.dispose();
 	}
 
 	public void setKeyToDelete(String key)

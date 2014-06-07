@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
@@ -30,7 +31,7 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 	public float upSpeed =30f;
 	public boolean withRune = false;
 	public boolean jump =false;
-	//Music mp3Music;
+	Sound keySound;
 	private int timeRune = 0;
 	private int KeyCount = 0;
 	private int hitPoints;
@@ -46,7 +47,7 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 		this.cy = cy;
 		this.gameLevel = gameLevel;
 		hitPoints=4;
-		//	mp3Music =  Gdx.audio.newMusic(Gdx.files.internal("SOMKEWEEDEVERYDAY.mp3"));
+		keySound =  Gdx.audio.newSound(Gdx.files.internal("shiny-ding.mp3"));
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(cx, cy);
@@ -111,12 +112,14 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 
 		else if ( FixtAString.startsWith("key"))
 		{
+			keySound.play();
 			KeyCount++;
 			gameLevel.setKeyToDelete(FixtAString);
 		}
 
 		else if( FixtBString.startsWith("key"))
 		{
+			keySound.play();
 			KeyCount++;
 			gameLevel.setKeyToDelete( FixtBString);
 		}
@@ -369,6 +372,11 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 		return false;
 	}
 
+	public void dispose()
+	{
+		
+		
+	}
 
 
 }
