@@ -3,6 +3,11 @@ package com.jumpityJump.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.input.GestureDetector.GestureListener;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -15,7 +20,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class Hero implements ContactListener{
+public class Hero implements ContactListener,GestureListener, InputProcessor{
 
 	public Body body;
 	public Fixture fixture;
@@ -31,6 +36,7 @@ public class Hero implements ContactListener{
 	private int hitPoints;
 	GameLevel gameLevel;
 	private boolean invunerable, doubleDamage;
+	private int w,h;
 
 	public Hero(World world, float cx, float cy,GameLevel gameLevel) {
 		invunerable = false;
@@ -56,6 +62,16 @@ public class Hero implements ContactListener{
 		fixtureDef.density = 8;
 		body = world.createBody(bodyDef);
 		fixture = body.createFixture(fixtureDef);
+
+
+
+		InputMultiplexer im = new InputMultiplexer();
+		GestureDetector gd = new GestureDetector(this);
+		im.addProcessor(gd);
+		im.addProcessor(this);
+
+
+		Gdx.input.setInputProcessor(im);
 	}
 
 	public Body getBody() {
@@ -241,6 +257,110 @@ public class Hero implements ContactListener{
 
 	public boolean isDoubleDamage() {
 		return doubleDamage;
+	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		if(jump)
+		{
+			jump = false;
+			body.applyLinearImpulse(0.0f, 2500.0f ,body.getWorldCenter().x ,body.getWorldCenter().y, true);
+			if (body.getLinearVelocity().y > upSpeed)
+				body.setLinearVelocity(body.getLinearVelocity().x, upSpeed);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(float x, float y, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean tap(float x, float y, int count, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean longPress(float x, float y) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean fling(float velocityX, float velocityY, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean pan(float x, float y, float deltaX, float deltaY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean panStop(float x, float y, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean zoom(float initialDistance, float distance) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2,
+			Vector2 pointer1, Vector2 pointer2) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 
