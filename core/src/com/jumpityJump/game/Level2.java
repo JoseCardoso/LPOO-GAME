@@ -3,6 +3,11 @@ package com.jumpityJump.game;
 
 public class Level2 extends GameLevel{
 
+	Level2()
+	{
+		super("Level2");
+	}
+	
 	@Override
 	public void show() {
 		super.show();
