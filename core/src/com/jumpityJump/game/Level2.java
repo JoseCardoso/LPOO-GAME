@@ -1,5 +1,6 @@
 package com.jumpityJump.game;
 
+
 public class Level2 extends GameLevel{
 
 	@Override

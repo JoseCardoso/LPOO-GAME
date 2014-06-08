@@ -87,26 +87,22 @@ public class MainMenuScreen implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				
-						((Game) Gdx.app.getApplicationListener()).setScreen(new Level2());
+						((Game) Gdx.app.getApplicationListener()).setScreen(new Level1());
 				}
 			}
 		);
 		buttonPlay.pad(15);
 
 		buttonSettings = new TextButton("SETTINGS", textButtonStyle);
-		buttonSettings.addListener(new ClickListener() {/*
+		buttonSettings.addListener(new ClickListener() {
 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				stage.addAction(sequence(moveTo(0, -stage.getHeight(), .5f), run(new Runnable() {
-
-					@Override
-					public void run() {
-						((Game) Gdx.app.getApplicationListener()).setScreen(new Settings());
-					}
-				})));
-			}*/
-		});
+				
+						((Game) Gdx.app.getApplicationListener()).setScreen(new SettingsScreen());
+				
+				}
+			});
 		buttonSettings.pad(15);
 
 		buttonExit = new TextButton("EXIT", textButtonStyle);
@@ -190,5 +186,6 @@ public class MainMenuScreen implements Screen {
 		stage.dispose();
 		skin.dispose();
 	}
+	
 
 }

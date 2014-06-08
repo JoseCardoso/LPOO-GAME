@@ -12,12 +12,14 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -43,7 +45,23 @@ public class SettingsScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		// TODO Auto-generated method stub
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		if (checkSound.isChecked())
+			JumpityJump.sound = true;
+		else
+			JumpityJump.sound = false;
+		
+		if (checkVibration.isChecked())
+			JumpityJump.vibrate = true;
+		else
+			JumpityJump.vibrate = false;
+		
+		
+		stage.act(delta);
+		stage.draw();
+			tweenManager.update(delta);// TODO Auto-generated method stub
 
 	}
 
@@ -74,6 +92,15 @@ public class SettingsScreen implements Screen {
 		textButtonStyle.pressedOffsetY = -1;
 		textButtonStyle.font = black;
 
+		CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
+		checkBoxStyle.checkboxOn = skin.getDrawable("checkbox.on");
+		checkBoxStyle.checkboxOver = skin.getDrawable("checkbox.over");
+		checkBoxStyle.checkboxOffDisabled = skin.getDrawable("checkbox.over");
+		checkBoxStyle.checkboxOff = skin.getDrawable("checkbox.over");
+		checkBoxStyle.checkboxOnDisabled = skin.getDrawable("checkbox.over");
+		checkBoxStyle.font = white;
+
+
 		Gdx.input.setInputProcessor(stage);
 
 
@@ -83,6 +110,14 @@ public class SettingsScreen implements Screen {
 		heading = new Label("SETTINGS", headlingStyle);
 		heading.setFontScale(2);
 
+		//creating checkBox
+
+		checkSound = new CheckBox("SOUND", checkBoxStyle);
+		checkSound.setChecked(true);
+		checkVibration = new CheckBox("VIBRATION" , checkBoxStyle);
+		checkVibration.setChecked(true);
+
+
 		// creating buttons
 
 		buttonReturn = new TextButton("EXIT", textButtonStyle);
@@ -90,24 +125,17 @@ public class SettingsScreen implements Screen {
 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Timeline.createParallel().beginParallel()
-				.push(Tween.to(table, ActorAccessor.ALPHA, .75f).target(0))
-				.push(Tween.to(table, ActorAccessor.Y, .75f).target(table.getY() - 50)
-						.setCallback(new TweenCallback() {
-
-							@Override
-							public void onEvent(int type, BaseTween<?> source) {
-								Gdx.app.exit();
-							}
-						}))
-						.end().start(tweenManager);
+				((Game) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
 			}
 		});
 		buttonReturn.pad(15);
 
 		// putting stuff together
 		table.add(heading).spaceBottom(100).row();
-		table.add(buttonReturn).spaceBottom(15).row();
+		table.add(checkSound).spaceBottom(20).row();
+		table.add(checkVibration).spaceBottom(50).row();
+
+		table.add(buttonReturn).spaceBottom(20).row();
 
 		stage.addActor(table);
 
@@ -128,13 +156,13 @@ public class SettingsScreen implements Screen {
 
 		// heading and buttons fade-in
 		Timeline.createSequence().beginSequence()
-		.push(Tween.set(buttonPlay, ActorAccessor.ALPHA).target(0))
-		.push(Tween.set(buttonSettings, ActorAccessor.ALPHA).target(0))
-		.push(Tween.set(buttonExit, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(buttonReturn, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(checkSound, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(checkVibration, ActorAccessor.ALPHA).target(0))
 		.push(Tween.from(heading, ActorAccessor.ALPHA, .25f).target(0))
-		.push(Tween.to(buttonPlay, ActorAccessor.ALPHA, .25f).target(1))
-		.push(Tween.to(buttonSettings, ActorAccessor.ALPHA, .25f).target(1))
-		.push(Tween.to(buttonExit, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(buttonReturn, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(checkSound, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(checkVibration, ActorAccessor.ALPHA, .25f).target(1))
 		.end().start(tweenManager);
 
 		// table fade-in
@@ -168,5 +196,7 @@ public class SettingsScreen implements Screen {
 		// TODO Auto-generated method stub
 
 	}
+
+
 
 }

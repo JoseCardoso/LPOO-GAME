@@ -5,13 +5,16 @@ import java.util.ArrayList;
 
 
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class GameLevel implements Screen{
 
@@ -30,6 +33,8 @@ public class GameLevel implements Screen{
 	protected final float TIMESTEP = 1/60f;
 	protected final int VelocityIterations = 8, PositionIterations = 3;
 	protected boolean destroyedRune =false;
+	private Sound keySound;
+	private long beginTime;
 
 
 	@Override
@@ -41,12 +46,16 @@ public class GameLevel implements Screen{
 		world.step(TIMESTEP, VelocityIterations, PositionIterations);
 
 		updateRunes();
-
+		
 		if(!keyToDelete.isEmpty())//há uma chave para apagar
 			updateKeys();
 		updateMonsters();
 		debugRenderer.render(world, camera.combined);
 		box.update();
+		if(box.endGame())
+			{
+			((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen());
+			}
 		camera.update();
 	}
 
@@ -81,11 +90,6 @@ public class GameLevel implements Screen{
 		monsterToDelete = "";
 	}
 
-
-	void updateRunes()
-	{
-
-	}
 
 	void updateKeys()
 	{
@@ -133,8 +137,9 @@ public class GameLevel implements Screen{
 
 	@Override
 	public void show() {
+		beginTime = TimeUtils.millis();
 		world = new World(new Vector2(0,-40.0f), true);
-
+		keySound =  Gdx.audio.newSound(Gdx.files.internal("shiny-ding.mp3"));
 		debugRenderer = new Box2DDebugRenderer();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth() /10, Gdx.graphics.getHeight()/10 );
 	}
@@ -160,7 +165,7 @@ public class GameLevel implements Screen{
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		box.dispose();
+
 	}
 
 	public void setKeyToDelete(String key)
@@ -178,6 +183,25 @@ public class GameLevel implements Screen{
 		this.monsterToDelete = monsterToDelete;
 	}
 
+	public void vibrate()
+	{
+		if (JumpityJump.vibrate)
+			Gdx.input.vibrate(100);
+	}
 
+	public void sound()
+	{
+		if(JumpityJump.sound)
+			keySound.play();
+	}
 
+	void updateRunes()
+	{
+		
+	}
+	
+	public long timePassed()
+	{
+		return TimeUtils.timeSinceMillis(beginTime);
+	}
 }

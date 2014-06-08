@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class JumpityJump extends Game {
 	SpriteBatch batch;
+	static boolean vibrate;
+	static boolean sound;
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
@@ -47,6 +49,8 @@ public class JumpityJump extends Game {
 	
 	@Override
 	public void create () {
+		vibrate=true;
+		sound=true;
 		setScreen(new Splash());
 		
 	}
