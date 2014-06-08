@@ -34,6 +34,7 @@ public class Rune {
 		FixtureDef fixtureDef= new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.restitution = 0.0f;
+		fixtureDef.isSensor = true;
 		fixtureDef.friction =0;
 		fixtureDef.density = 0;
 		

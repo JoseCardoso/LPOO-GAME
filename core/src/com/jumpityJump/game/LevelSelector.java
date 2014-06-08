@@ -27,8 +27,8 @@ public class LevelSelector implements Screen {
 	private Stage stage;
 	private Skin skin;
 	private TextureAtlas atlas;
-	private Table table, buttonsUp, buttonsDown;
-	private TextButton buttonLevel1 ,buttonLevel2 ,buttonLevel3 ,buttonLevel4 ,buttonLevel5 ,buttonLevel6 , buttonReturn;
+	private Table table, buttonsUp, buttonsMiddle ,buttonsDown;
+	private TextButton buttonLevel1 ,buttonLevel2 ,buttonLevel3 ,buttonTutorial1 ,buttonTutorial2,buttonTutorial3,buttonTutorial4,buttonTutorial5,buttonTutorial6, buttonReturn;
 	private Label heading;
 	private BitmapFont white, black;
 	private TweenManager tweenManager;
@@ -62,6 +62,7 @@ public class LevelSelector implements Screen {
 
 		table = new Table(skin);
 		buttonsUp = new Table(skin);
+		buttonsMiddle = new Table(skin);
 		buttonsDown = new Table(skin);
 		table.setFillParent(true);
 
@@ -116,40 +117,70 @@ public class LevelSelector implements Screen {
 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				//((Game) Gdx.app.getApplicationListener()).setScreen(new Level1());
+				((Game) Gdx.app.getApplicationListener()).setScreen(new Level3());
 			}
 		});
 		buttonLevel3.pad(15);
 		
-		buttonLevel4 = new TextButton(" 4 ", textButtonStyle);
-		buttonLevel4.addListener(new ClickListener() {
+		buttonTutorial1 = new TextButton(" T1 ", textButtonStyle);
+		buttonTutorial1.addListener(new ClickListener() {
 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				//((Game) Gdx.app.getApplicationListener()).setScreen(new Level1());
+				((Game) Gdx.app.getApplicationListener()).setScreen(new Tutorial1());
 			}
 		});
-		buttonLevel4.pad(15);
+		buttonTutorial1.pad(15);
 		
-		buttonLevel5 = new TextButton(" 5 ", textButtonStyle);
-		buttonLevel5.addListener(new ClickListener() {
+		buttonTutorial2 = new TextButton(" T2 ", textButtonStyle);
+		buttonTutorial2.addListener(new ClickListener() {
 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				//((Game) Gdx.app.getApplicationListener()).setScreen(new Level1());
+				((Game) Gdx.app.getApplicationListener()).setScreen(new Tutorial2());
 			}
 		});
-		buttonLevel5.pad(15);
+		buttonTutorial2.pad(15);
 		
-		buttonLevel6 = new TextButton(" 6 ", textButtonStyle);
-		buttonLevel6.addListener(new ClickListener() {
+		buttonTutorial3 = new TextButton(" T3 ", textButtonStyle);
+		buttonTutorial3.addListener(new ClickListener() {
 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				//((Game) Gdx.app.getApplicationListener()).setScreen(new Level1());
+				((Game) Gdx.app.getApplicationListener()).setScreen( new Tutorial3());
 			}
 		});
-		buttonLevel6.pad(15);
+		buttonTutorial3.pad(15);
+		
+		buttonTutorial4 = new TextButton(" T4 ", textButtonStyle);
+		buttonTutorial4.addListener(new ClickListener() {
+
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				((Game) Gdx.app.getApplicationListener()).setScreen(new Tutorial4());
+			}
+		});
+		buttonTutorial4.pad(15);
+		
+		buttonTutorial5 = new TextButton(" T5 ", textButtonStyle);
+		buttonTutorial5.addListener(new ClickListener() {
+
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				((Game) Gdx.app.getApplicationListener()).setScreen(new Tutorial5());
+			}
+		});
+		buttonTutorial5.pad(15);
+		
+		buttonTutorial6 = new TextButton(" T6 ", textButtonStyle);
+		buttonTutorial6.addListener(new ClickListener() {
+
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				((Game) Gdx.app.getApplicationListener()).setScreen(new Tutorial6());
+			}
+		});
+		buttonTutorial6.pad(15);
 
 		buttonReturn = new TextButton("RETURN", textButtonStyle);
 		buttonReturn.addListener(new ClickListener() {
@@ -161,19 +192,22 @@ public class LevelSelector implements Screen {
 		});
 		buttonReturn.pad(15);
 
-		buttonsUp.add(buttonLevel1).spaceRight(20);
-		buttonsUp.add(buttonLevel2).spaceRight(20);
-		buttonsUp.add(buttonLevel3);
-		buttonsDown.add(buttonLevel4).spaceRight(20);
-		buttonsDown.add(buttonLevel5).spaceRight(20);
-		buttonsDown.add(buttonLevel6);
+		buttonsDown.add(buttonLevel1).spaceRight(20);
+		buttonsDown.add(buttonLevel2).spaceRight(20);
+		buttonsDown.add(buttonLevel3);
+		buttonsUp.add(buttonTutorial1).spaceRight(20);
+		buttonsUp.add(buttonTutorial2).spaceRight(20);
+		buttonsUp.add(buttonTutorial3);
+		buttonsMiddle.add(buttonTutorial4).spaceRight(20);
+		buttonsMiddle.add(buttonTutorial5).spaceRight(20);
+		buttonsMiddle.add(buttonTutorial6);
 		
 		// putting stuff together
 		table.add(heading).spaceBottom(20).row();
 		table.add(buttonsUp).spaceBottom(25).row();
+		table.add(buttonsMiddle).spaceBottom(25).row();
 		table.add(buttonsDown).spaceBottom(25).row();
-
-
+		table.add(buttonReturn);
 		stage.addActor(table);
 
 		// creating animations
@@ -193,19 +227,27 @@ public class LevelSelector implements Screen {
 
 		// heading and buttons fade-in
 		Timeline.createSequence().beginSequence()
+		.push(Tween.set(buttonTutorial1, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(buttonTutorial2, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(buttonTutorial3, ActorAccessor.ALPHA).target(0))		
+		.push(Tween.set(buttonTutorial4, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(buttonTutorial5, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(buttonTutorial6, ActorAccessor.ALPHA).target(0))
 		.push(Tween.set(buttonLevel1, ActorAccessor.ALPHA).target(0))
 		.push(Tween.set(buttonLevel2, ActorAccessor.ALPHA).target(0))
 		.push(Tween.set(buttonLevel3, ActorAccessor.ALPHA).target(0))
-		.push(Tween.set(buttonLevel4, ActorAccessor.ALPHA).target(0))
-		.push(Tween.set(buttonLevel5, ActorAccessor.ALPHA).target(0))
-		.push(Tween.set(buttonLevel6, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(buttonReturn, ActorAccessor.ALPHA).target(0))
 		.push(Tween.from(heading, ActorAccessor.ALPHA, .25f).target(0))
+		.push(Tween.to(buttonTutorial1, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(buttonTutorial2, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(buttonTutorial3, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(buttonTutorial4, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(buttonTutorial5, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(buttonTutorial6, ActorAccessor.ALPHA, .25f).target(1))
 		.push(Tween.to(buttonLevel1, ActorAccessor.ALPHA, .25f).target(1))
 		.push(Tween.to(buttonLevel2, ActorAccessor.ALPHA, .25f).target(1))
 		.push(Tween.to(buttonLevel3, ActorAccessor.ALPHA, .25f).target(1))
-		.push(Tween.to(buttonLevel4, ActorAccessor.ALPHA, .25f).target(1))
-		.push(Tween.to(buttonLevel5, ActorAccessor.ALPHA, .25f).target(1))
-		.push(Tween.to(buttonLevel6, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(buttonReturn, ActorAccessor.ALPHA, .25f).target(1))
 		.end().start(tweenManager);
 
 		// table fade-in
@@ -218,7 +260,7 @@ public class LevelSelector implements Screen {
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
+		dispose();
 
 	}
 
@@ -236,8 +278,8 @@ public class LevelSelector implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
+		stage.dispose();
+		skin.dispose();
 	}
 
 }

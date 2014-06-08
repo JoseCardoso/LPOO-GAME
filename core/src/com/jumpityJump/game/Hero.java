@@ -6,7 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.audio.Sound;
+
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
@@ -38,7 +38,6 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 	private int hitPoints;
 	GameLevel gameLevel;
 	private boolean invunerable, doubleDamage;
-	private int w,h;
 
 	public Hero(World world, float cx, float cy,GameLevel gameLevel) {
 		invunerable = false;
@@ -94,7 +93,7 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 		if (FixtA.getUserData() == "exit" || FixtB.getUserData() == "exit")
 		{	
 			if (KeyCount == 3)
-				((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(gameLevel.timePassed()));
+				((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(gameLevel.timePassed(), gameLevel));
 			
 		}
 		else if (FixtAString.startsWith("rune"))
@@ -157,6 +156,10 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 			System.out.println("dead");
 	}
 
+
+	public void setKeyCount(int keyCount) {
+		KeyCount = keyCount;
+	}
 
 	private void processRune(String rune)//process each power received by the hero
 	{

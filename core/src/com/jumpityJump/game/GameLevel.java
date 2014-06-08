@@ -1,11 +1,6 @@
 package com.jumpityJump.game;
 
-
 import java.util.ArrayList;
-
-
-
-
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -20,44 +15,48 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class GameLevel implements Screen{
+public class GameLevel implements Screen {
 
 	protected World world;
 	private Box2DDebugRenderer debugRenderer;
 	private OrthographicCamera camera;
 	protected Hero box;
-	protected ArrayList <Platform> plats= new ArrayList<Platform>();
-	protected ArrayList <Platform> walls= new ArrayList<Platform>();
-	protected ArrayList <Rune> runes = new ArrayList<Rune>();
-	protected ArrayList <Monster> monsters = new ArrayList<Monster>();
-	protected String keyToDelete ="";
-	protected String runeToDelete ="";
-	protected String monsterToDelete ="";
+	protected ArrayList<Platform> plats = new ArrayList<Platform>();
+	protected ArrayList<Platform> walls = new ArrayList<Platform>();
+	protected ArrayList<Rune> runes = new ArrayList<Rune>();
+	protected ArrayList<Monster> monsters = new ArrayList<Monster>();
+	protected String keyToDelete = "";
+	protected String runeToDelete = "";
+	protected String monsterToDelete = "";
+	protected int levelWidth, levelHeight;
 	protected Key[] keys = new Key[3];
-	protected final float TIMESTEP = 1/60f;
+	protected final float TIMESTEP = 1 / 60f;
 	protected final int VelocityIterations = 8, PositionIterations = 3;
-	protected boolean destroyedRune =false;
+	protected boolean destroyedRune = false;
 	private Sound keySound;
 	private long beginTime;
 	protected HighScores highScores;
 	private String levelName;
 
+	public String getLevelName() {
+		return levelName;
+	}
+
 	public GameLevel(String levelName) {
 		// TODO Auto-generated constructor stub
 		this.levelName = levelName;
-		FileHandle handle = new FileHandle(levelName + ".txt");
-		if(handle.exists())
-		{
+		FileHandle handle = Gdx.files.local(levelName + ".txt");
+		if (handle.exists()) {
 			Json json = new Json();
-			highScores = json.fromJson(HighScores.class,handle.readString());
-		}
-		else
+			highScores = json.fromJson(HighScores.class, handle.readString());
+		} else
 			highScores = new HighScores();
+		levelWidth = 0;
+		levelHeight = 0;
 	}
 
 	@Override
-	public void render(float delta) 
-	{
+	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -65,77 +64,67 @@ public class GameLevel implements Screen{
 
 		updateRunes();
 
-		if(!keyToDelete.isEmpty())//há uma chave para apagar
+		if (!keyToDelete.isEmpty())// há uma chave para apagar
 			updateKeys();
 		updateMonsters();
 		debugRenderer.render(world, camera.combined);
 		box.update();
-		if(box.endGame())
-		{
-			((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen());
+		if (box.endGame()) {
+			((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen(
+					this));
 		}
 		camera.update();
 	}
 
-
 	private void updateMonsters() {
 		// TODO Auto-generated method stub
 
-		for(int i = 0; i < monsters.size();i++)
-		{
+		for (int i = 0; i < monsters.size(); i++) {
 			String t = monsters.listIterator(i).next().body.getUserData() + "";
-			if(t.equals(monsterToDelete))
-			{
-				if(box.isDoubleDamage())//para o caso do heroi estar com uma rune de dano duplo
+			if (t.equals(monsterToDelete)) {
+				if (box.isDoubleDamage())// para o caso do heroi estar com uma
+											// rune de dano duplo
 					monsters.listIterator(i).next().decHP();
-				if(monsters.listIterator(i).next().getHitPoints() >1)
-				{
+				if (monsters.listIterator(i).next().getHitPoints() > 1) {
 					monsters.listIterator(i).next().decHP();
 					monsters.listIterator(i).next().update();
-				}
-				else
-				{
+				} else {
 					world.destroyBody(monsters.listIterator(i).next().body);
 					monsters.listIterator(i).next().body.setUserData(null);
 					monsters.listIterator(i).next().body = null;
 					monsters.remove(i);
 					break;
 				}
-			}
-			else
+			} else
 				monsters.listIterator(i).next().update();
 		}
 		monsterToDelete = "";
 	}
 
-
-	void updateKeys()
-	{
+	void updateKeys() {
 
 		int sizeKeys = keys.length;
-		Key[] tempKeys = new Key[sizeKeys-1];
+		Key[] tempKeys = new Key[sizeKeys - 1];
 		String t;
 		int count = 0;
-		for(int j = 0; j < sizeKeys;j++)
-		{
-			t = ((String)keys[j].body.getUserData() )+"";//para evitar apontadores para vazio
+		for (int j = 0; j < sizeKeys; j++) {
+			t = ((String) keys[j].body.getUserData()) + "";// para evitar
+															// apontadores para
+															// vazio
 
-			if(keyToDelete.equals(t))//se for esta a chave a apagar
+			if (keyToDelete.equals(t))// se for esta a chave a apagar
 			{
 				world.destroyBody(keys[j].body);
 				keys[j].body.setUserData(null);
-				keys[j].body = null;		
+				keys[j].body = null;
 				count--;
-			}
-			else
-			{
+			} else {
 				tempKeys[count] = keys[j];
 			}
 			count++;
 		}
-		keys = new Key[sizeKeys-1];
-		for(int j = 0; j < sizeKeys-1;j++)
-		{
+		keys = new Key[sizeKeys - 1];
+		for (int j = 0; j < sizeKeys - 1; j++) {
 			keys[j] = tempKeys[j];
 		}
 
@@ -145,8 +134,19 @@ public class GameLevel implements Screen{
 
 	@Override
 	public void resize(int width, int height) {
-		camera.viewportWidth = width/10;
-		camera.viewportHeight= height/10;
+		float wte = width * levelHeight
+				/ height;
+		if (wte >= levelWidth) {
+			camera.viewportWidth = wte;
+			camera.viewportHeight = levelHeight;
+		}
+		else {
+			float hte = height * levelWidth
+					/ width;
+			camera.viewportWidth = levelWidth;
+			camera.viewportHeight = hte;
+		}
+
 	}
 
 	public Hero getBox() {
@@ -156,10 +156,18 @@ public class GameLevel implements Screen{
 	@Override
 	public void show() {
 		beginTime = TimeUtils.millis();
-		world = new World(new Vector2(0,-40.0f), true);
-		keySound =  Gdx.audio.newSound(Gdx.files.internal("shiny-ding.mp3"));
+		world = new World(new Vector2(0, -40.0f), true);
+		keySound = Gdx.audio.newSound(Gdx.files.internal("shiny-ding.mp3"));
 		debugRenderer = new Box2DDebugRenderer();
-		camera = new OrthographicCamera(Gdx.graphics.getWidth() /10, Gdx.graphics.getHeight()/10 );
+		float wte = Gdx.graphics.getWidth() * levelHeight
+				/ Gdx.graphics.getHeight();
+		if (wte >= levelWidth)
+			camera = new OrthographicCamera(wte, levelHeight);
+		else {
+			float hte = Gdx.graphics.getHeight() * levelWidth
+					/ Gdx.graphics.getWidth();
+			camera = new OrthographicCamera(levelWidth, hte);
+		}
 	}
 
 	@Override
@@ -186,44 +194,41 @@ public class GameLevel implements Screen{
 
 	}
 
-	public void setKeyToDelete(String key)
-	{
-		keyToDelete = key +"";		
+	public void setKeyToDelete(String key) {
+		keyToDelete = key + "";
 	}
-
 
 	public void setRuneToDelete(String runeToDelete) {
 		this.runeToDelete = runeToDelete;
 	}
 
-
 	public void setMonsterToDelete(String monsterToDelete) {
 		this.monsterToDelete = monsterToDelete;
 	}
 
-	public void vibrate()
-	{
+	public HighScores getHighScores() {
+		return highScores;
+	}
+
+	public void vibrate() {
 		if (JumpityJump.vibrate)
 			Gdx.input.vibrate(100);
 	}
 
-	public void sound()
-	{
-		if(JumpityJump.sound)
+	public void sound() {
+		if (JumpityJump.sound)
 			keySound.play();
 	}
 
-	void updateRunes()
-	{
+	void updateRunes() {
 
 	}
 
-	public long timePassed()
-	{
-		highScores.newScore(beginTime);		
-		FileHandle handle = new FileHandle(levelName + ".txt");
+	public long timePassed() {
+		highScores.newScore(TimeUtils.timeSinceMillis(beginTime));
+		FileHandle handle = Gdx.files.local(levelName + ".txt");
 		Json json = new Json();
-		handle.writeString(json.toJson(highScores),false);		
+		handle.writeString(json.toJson(highScores), false);
 		return TimeUtils.timeSinceMillis(beginTime);
 	}
 }

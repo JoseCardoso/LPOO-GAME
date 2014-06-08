@@ -1,10 +1,17 @@
 package com.jumpityJump.game;
 
+import com.badlogic.gdx.Gdx;
+
 public class Level1 extends GameLevel{
 
 	Level1()
 	{
 		super("Level1");
+		
+		levelWidth=200;
+		levelHeight =100 ;
+		
+		
 	}
 	
 	@Override

@@ -27,10 +27,11 @@ public class LoseScreen implements Screen{
 	private Skin skin;
 	private TextureAtlas atlas;
 	private Table table, buttonsTable;
-	private TextButton buttonPlayAgain , buttonNo;
+	private TextButton buttonPlayAgain , buttonNo, buttonHighScores;
 	private Label heading, question;
 	private BitmapFont white, black;
 	private TweenManager tweenManager;
+	private GameLevel game;
 
 	@Override
 	public void render(float delta) {
@@ -47,6 +48,12 @@ public class LoseScreen implements Screen{
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public LoseScreen(GameLevel game)
+	{
+		this.game = game;
+		
 	}
 	
 	
@@ -94,7 +101,18 @@ public class LoseScreen implements Screen{
 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				((Game) Gdx.app.getApplicationListener()).setScreen(new Level1());
+				if(game.getLevelName().equals( "Level1"))
+					((Game) Gdx.app.getApplicationListener()).setScreen(new Level1());
+				else if(game.getLevelName().equals( "Level2"))
+					((Game) Gdx.app.getApplicationListener()).setScreen(new Level2());
+				else if(game.getLevelName().equals( "Level3"))
+					((Game) Gdx.app.getApplicationListener()).setScreen(new Level3());
+				else if(game.getLevelName().equals( "Level4")){}
+					//((Game) Gdx.app.getApplicationListener()).setScreen(new Level4());
+				else if(game.getLevelName().equals( "Level5")){}
+					//((Game) Gdx.app.getApplicationListener()).setScreen(new Level5());
+				else if(game.getLevelName().equals( "Level6")){}
+					//((Game) Gdx.app.getApplicationListener()).setScreen(new Level6());
 			}
 		});
 		buttonPlayAgain.pad(15);
@@ -108,6 +126,17 @@ public class LoseScreen implements Screen{
 			}
 		});
 		buttonNo.pad(15);
+		
+
+		buttonHighScores = new TextButton("HIGHSCORES", textButtonStyle);
+		buttonHighScores.addListener(new ClickListener() {
+
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				((Game) Gdx.app.getApplicationListener()).setScreen(new HighscoreScreen(game, false, 0));
+			}
+		});
+		buttonHighScores.pad(15);
 
 		// putting stuff together
 		table.add(heading).spaceBottom(55).row();
@@ -115,6 +144,7 @@ public class LoseScreen implements Screen{
 		buttonsTable.add(buttonPlayAgain).spaceRight(5);
 		buttonsTable.add(buttonNo);
 		table.add(buttonsTable).spaceBottom(30).row();
+		table.add(buttonHighScores);
 
 
 		stage.addActor(table);
@@ -138,10 +168,12 @@ public class LoseScreen implements Screen{
 		Timeline.createSequence().beginSequence()
 		.push(Tween.set(buttonPlayAgain, ActorAccessor.ALPHA).target(0))
 		.push(Tween.set(buttonNo, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(buttonHighScores, ActorAccessor.ALPHA).target(0))
 		.push(Tween.set(question, ActorAccessor.ALPHA).target(0))		
 		.push(Tween.from(heading, ActorAccessor.ALPHA, .25f).target(0))
 		.push(Tween.to(buttonPlayAgain, ActorAccessor.ALPHA, .25f).target(1))
 		.push(Tween.to(buttonNo, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(buttonHighScores, ActorAccessor.ALPHA, .25f).target(1))
 		.push(Tween.to(question, ActorAccessor.ALPHA, .25f).target(1))
 		.end().start(tweenManager);
 

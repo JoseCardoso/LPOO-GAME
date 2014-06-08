@@ -6,6 +6,9 @@ public class Level2 extends GameLevel{
 	Level2()
 	{
 		super("Level2");
+		
+		levelHeight = 60;
+		levelWidth = 160;
 	}
 	
 	@Override

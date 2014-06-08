@@ -1,11 +1,9 @@
 package com.jumpityJump.game;
 
-import java.awt.Checkbox;
 
-import aurelienribon.tweenengine.BaseTween;
+
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Game;
@@ -175,7 +173,7 @@ public class SettingsScreen implements Screen {
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
+		dispose();
 
 	}
 
@@ -193,7 +191,8 @@ public class SettingsScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
+		stage.dispose();
+		skin.dispose();
 
 	}
 
