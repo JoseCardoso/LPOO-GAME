@@ -27,7 +27,7 @@ public class LevelSelector implements Screen {
 	private Stage stage;
 	private Skin skin;
 	private TextureAtlas atlas;
-	private Table table, buttonsTable;
+	private Table table, buttonsUp, buttonsDown;
 	private TextButton buttonLevel1 ,buttonLevel2 ,buttonLevel3 ,buttonLevel4 ,buttonLevel5 ,buttonLevel6 , buttonReturn;
 	private Label heading;
 	private BitmapFont white, black;
@@ -61,7 +61,8 @@ public class LevelSelector implements Screen {
 		skin = new Skin(atlas);
 
 		table = new Table(skin);
-		buttonsTable = new Table(skin);
+		buttonsUp = new Table(skin);
+		buttonsDown = new Table(skin);
 		table.setFillParent(true);
 
 		white = new BitmapFont(Gdx.files.internal("font/white.fnt"), false);
@@ -160,13 +161,17 @@ public class LevelSelector implements Screen {
 		});
 		buttonReturn.pad(15);
 
+		buttonsUp.add(buttonLevel1).spaceRight(20);
+		buttonsUp.add(buttonLevel2).spaceRight(20);
+		buttonsUp.add(buttonLevel3);
+		buttonsDown.add(buttonLevel4).spaceRight(20);
+		buttonsDown.add(buttonLevel5).spaceRight(20);
+		buttonsDown.add(buttonLevel6);
+		
 		// putting stuff together
-		table.add(heading).spaceBottom(25).row();
-		table.add(score).spaceBottom(30).row();
-		table.add(question).spaceBottom(20).row();
-		buttonsTable.add(buttonPlayAgain).spaceRight(5);
-		buttonsTable.add(buttonNo);
-		table.add(buttonsTable).spaceBottom(30).row();
+		table.add(heading).spaceBottom(20).row();
+		table.add(buttonsUp).spaceBottom(25).row();
+		table.add(buttonsDown).spaceBottom(25).row();
 
 
 		stage.addActor(table);
@@ -188,15 +193,19 @@ public class LevelSelector implements Screen {
 
 		// heading and buttons fade-in
 		Timeline.createSequence().beginSequence()
-		.push(Tween.set(buttonPlayAgain, ActorAccessor.ALPHA).target(0))
-		.push(Tween.set(buttonNo, ActorAccessor.ALPHA).target(0))
-		.push(Tween.set(score, ActorAccessor.ALPHA).target(0))
-		.push(Tween.set(question, ActorAccessor.ALPHA).target(0))		
+		.push(Tween.set(buttonLevel1, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(buttonLevel2, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(buttonLevel3, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(buttonLevel4, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(buttonLevel5, ActorAccessor.ALPHA).target(0))
+		.push(Tween.set(buttonLevel6, ActorAccessor.ALPHA).target(0))
 		.push(Tween.from(heading, ActorAccessor.ALPHA, .25f).target(0))
-		.push(Tween.to(buttonPlayAgain, ActorAccessor.ALPHA, .25f).target(1))
-		.push(Tween.to(buttonNo, ActorAccessor.ALPHA, .25f).target(1))
-		.push(Tween.to(score, ActorAccessor.ALPHA, .25f).target(1))
-		.push(Tween.to(question, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(buttonLevel1, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(buttonLevel2, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(buttonLevel3, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(buttonLevel4, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(buttonLevel5, ActorAccessor.ALPHA, .25f).target(1))
+		.push(Tween.to(buttonLevel6, ActorAccessor.ALPHA, .25f).target(1))
 		.end().start(tweenManager);
 
 		// table fade-in

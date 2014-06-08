@@ -9,8 +9,8 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Jumpity Jump";
 		config.useGL30 = true;
-		config.width = 1280;
-		config.height =720;
+		config.width = 1920;
+		config.height =1080;
 		new LwjglApplication(new JumpityJump(), config);
 	}
 }
