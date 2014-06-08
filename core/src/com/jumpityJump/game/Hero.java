@@ -1,6 +1,7 @@
 package com.jumpityJump.game;
 
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -31,7 +32,7 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 	public float upSpeed =30f;
 	public boolean withRune = false;
 	public boolean jump =false;
-	Sound keySound;
+	
 	private int timeRune = 0;
 	private int KeyCount = 0;
 	private int hitPoints;
@@ -47,7 +48,6 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 		this.cy = cy;
 		this.gameLevel = gameLevel;
 		hitPoints=4;
-		keySound =  Gdx.audio.newSound(Gdx.files.internal("shiny-ding.mp3"));
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(cx, cy);
@@ -85,7 +85,7 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 		Fixture FixtA = contact.getFixtureA();
 		Fixture FixtB = contact.getFixtureB();
 
-		String FixtAString = ((String) FixtA.getUserData()) +"";//estas aspas servem para clonar a string, evitando que esta variável fique a apontar para um vazio
+		String FixtAString = ((String) FixtA.getUserData()) +"";//estas aspas servem para clonar a string, evitando que esta variÃ¡vel fique a apontar para um vazio
 		String FixtBString = ((String) FixtB.getUserData()) +"";
 
 
@@ -93,7 +93,9 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 
 		if (FixtA.getUserData() == "exit" || FixtB.getUserData() == "exit")
 		{	
-			System.out.println("lol,n00b");
+			if (KeyCount == 3)
+				((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(gameLevel.timePassed()));
+			
 		}
 		else if (FixtAString.startsWith("rune"))
 		{
@@ -112,20 +114,20 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 
 		else if ( FixtAString.startsWith("key"))
 		{
-			keySound.play();
+			gameLevel.sound();
 			KeyCount++;
 			gameLevel.setKeyToDelete(FixtAString);
 		}
 
 		else if( FixtBString.startsWith("key"))
 		{
-			keySound.play();
+			gameLevel.sound();
 			KeyCount++;
 			gameLevel.setKeyToDelete( FixtBString);
 		}
 		else if ( FixtAString.startsWith("monster"))
 		{
-			Gdx.input.vibrate(10);
+			gameLevel.vibrate();
 			if(FixtA.getBody().getPosition().y +2 > FixtB.getBody().getPosition().y)
 			{
 				if(!invunerable)
@@ -137,7 +139,7 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 
 		else if( FixtBString.startsWith("monster"))
 		{
-			Gdx.input.vibrate(10);
+			gameLevel.vibrate();
 			if(FixtB.getBody().getPosition().y +2 > FixtA.getBody().getPosition().y)
 			{
 				if(!invunerable){
@@ -221,11 +223,11 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 
 	public void update() {
 
-		float accelZ = Gdx.input.getAccelerometerZ();
-		if(accelZ < 0)
+		float accel = Gdx.input.getAccelerometerY();
+		if(accel < -1)
 			body.setLinearVelocity(-velocity, body.getLinearVelocity().y);
-		else if(accelZ > 0)
-			body.setLinearVelocity(-velocity, body.getLinearVelocity().y);
+		else if(accel > 1)
+			body.setLinearVelocity(velocity, body.getLinearVelocity().y);
 
 		if (Gdx.input.isKeyPressed(Input.Keys.UP))
 		{
@@ -378,6 +380,16 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 		
 	}
 
+	public boolean endGame()
+	{
+		if (hitPoints <= 0)
+			return true;
+		
+		else if (body.getPosition().y < -70)
+			return true;
+		else 
+			return false;
+	}	
 
 }
 

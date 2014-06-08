@@ -11,22 +11,23 @@ public class Level1 extends GameLevel{
 		world.setContactListener(box);
 		
 		plats.add(new Platform(world, 0,-25, 2, 35));
-		plats.add(new Platform(world,15 , 10, 1, 3));
-		plats.add(new Platform(world,0, -10, 1, 3));
-		plats.add(new Platform(world,15 , -15, 1, 3));
-		plats.add(new Exit(world,0 ,5, 1, 3));
-		plats.add(new Platform(world, -15 , -15, 1, 3));
-		plats.add(new Platform(world,-15 , 10, 1, 3));
+		plats.add(new Platform(world,20 , 10, 1, 6));
+		plats.add(new Platform(world,0, -10, 1, 6));
+		plats.add(new Platform(world,20 , -15, 1, 6));
+		plats.add(new Platform(world,20 , -3.5f, 1, 6));
+		plats.add(new Exit(world,0 ,5, 1, 6));
+		plats.add(new Platform(world, -20 , -15, 1, 6));
+		plats.add(new Platform(world,-20 , 10, 1, 6));
 		walls.add(new Platform (world, -25 , 0, 35, 1));
 		walls.add(new Platform (world, 25 , 0, 35, 1));
 		walls.add(new Platform (world, 0 ,25, 2, 35));
 		runes.add(new Rune(world,0, -7, 0.5f));
-		keys[0] = new Key(world,15, -12, 0.5f,"1");
-		keys[1] = new Key(world,-15, -12, 0.5f,"2");
-		keys[2] = new Key(world,-15, 12, 0.5f,"3");
+		keys[0] = new Key(world,20, -12, 0.5f,"1");
+		keys[1] = new Key(world,-20, -12, 0.5f,"2");
+		keys[2] = new Key(world,-20, 12, 0.5f,"3");
 
-		monsters.add(new Monster(world, 15, 12.5f, 2f, 2f));
-		monsters.add(new Monster(world, -15, 12.5f, 2f, 2f));
+		monsters.add(new Monster(world, 20, 12.5f, 4.5f, 3f));
+		monsters.add(new Monster(world, -20, 12.5f, 3f, 4.5f));
 	}
 
 	void updateRunes()
