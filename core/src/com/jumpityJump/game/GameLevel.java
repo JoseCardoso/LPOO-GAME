@@ -5,15 +5,19 @@ import java.util.ArrayList;
 
 
 
+
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class GameLevel implements Screen{
@@ -35,7 +39,21 @@ public class GameLevel implements Screen{
 	protected boolean destroyedRune =false;
 	private Sound keySound;
 	private long beginTime;
+	protected HighScores highScores;
+	private String levelName;
 
+	public GameLevel(String levelName) {
+		// TODO Auto-generated constructor stub
+		this.levelName = levelName;
+		FileHandle handle = new FileHandle(levelName + ".txt");
+		if(handle.exists())
+		{
+			Json json = new Json();
+			highScores = json.fromJson(HighScores.class,handle.readString());
+		}
+		else
+			highScores = new HighScores();
+	}
 
 	@Override
 	public void render(float delta) 
@@ -46,23 +64,23 @@ public class GameLevel implements Screen{
 		world.step(TIMESTEP, VelocityIterations, PositionIterations);
 
 		updateRunes();
-		
+
 		if(!keyToDelete.isEmpty())//há uma chave para apagar
 			updateKeys();
 		updateMonsters();
 		debugRenderer.render(world, camera.combined);
 		box.update();
 		if(box.endGame())
-			{
+		{
 			((Game) Gdx.app.getApplicationListener()).setScreen(new LoseScreen());
-			}
+		}
 		camera.update();
 	}
 
 
 	private void updateMonsters() {
 		// TODO Auto-generated method stub
-			
+
 		for(int i = 0; i < monsters.size();i++)
 		{
 			String t = monsters.listIterator(i).next().body.getUserData() + "";
@@ -197,11 +215,15 @@ public class GameLevel implements Screen{
 
 	void updateRunes()
 	{
-		
+
 	}
-	
+
 	public long timePassed()
 	{
+		highScores.newScore(beginTime);		
+		FileHandle handle = new FileHandle(levelName + ".txt");
+		Json json = new Json();
+		handle.writeString(json.toJson(highScores),false);		
 		return TimeUtils.timeSinceMillis(beginTime);
 	}
 }
