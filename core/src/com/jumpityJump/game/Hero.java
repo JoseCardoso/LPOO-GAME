@@ -6,7 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
@@ -32,14 +32,14 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 	public float upSpeed =30f;
 	public boolean withRune = false;
 	public boolean jump =false;
-	
 	private int timeRune = 0;
 	private int KeyCount = 0;
 	private int hitPoints;
+	//private Sprite heroSprite;
 	GameLevel gameLevel;
 	private boolean invunerable, doubleDamage;
 
-	public Hero(World world, float cx, float cy,GameLevel gameLevel) {
+	public Hero(World world, float cx, float cy,GameLevel gameLevel/*,Sprite text*/) {
 		invunerable = false;
 		doubleDamage = false;
 
@@ -55,6 +55,8 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(1.0f,  1.5f);
 
+		//heroSprite = new Sprite(text);
+	//	heroSprite.setSize(1.0f, 1.5f);
 		FixtureDef fixtureDef= new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.restitution = 0.0f;
@@ -94,7 +96,7 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 		{	
 			if (KeyCount == 3)
 				((Game) Gdx.app.getApplicationListener()).setScreen(new WinScreen(gameLevel.timePassed(), gameLevel));
-			
+
 		}
 		else if (FixtAString.startsWith("rune"))
 		{
@@ -142,7 +144,6 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 			if(FixtB.getBody().getPosition().y +2 > FixtA.getBody().getPosition().y)
 			{
 				if(!invunerable){
-					System.out.println("hit");
 					hitPoints--;
 				}
 			}
@@ -152,8 +153,6 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 			}
 		}
 
-		if(hitPoints <=0)
-			System.out.println("dead");
 	}
 
 
@@ -163,7 +162,6 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 
 	private void processRune(String rune)//process each power received by the hero
 	{
-		System.out.println(rune);
 		if(rune.contains("Acceleration Boost"))
 		{
 			velocity = 40f;
@@ -377,17 +375,11 @@ public class Hero implements ContactListener,GestureListener, InputProcessor{
 		return false;
 	}
 
-	public void dispose()
-	{
-		
-		
-	}
-
 	public boolean endGame()
 	{
 		if (hitPoints <= 0)
 			return true;
-		
+
 		else if (body.getPosition().y < -70)
 			return true;
 		else 

@@ -63,5 +63,9 @@ public class Key {
 		fixture.setUserData(this.name);
 		body.setUserData(this.name);
 	}
+
+	public String getName() {
+		return name;
+	}
 	
 }

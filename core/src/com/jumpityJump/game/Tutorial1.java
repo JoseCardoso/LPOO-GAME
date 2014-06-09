@@ -20,8 +20,9 @@ public class Tutorial1 extends GameLevel {
 		box.setKeyCount(3);
 		world.setContactListener(box);
 	
-		walls.add(new Platform (world, -75 , 0, 35, 1));//PAREDE ESQUERDA
-		walls.add(new Platform(world, 0, -20, 1, 100));
-		walls.add(new Exit(world, 0, -10, 1, 4));
+		plats.add(new Platform (world, -75 , 0, 35, 1));//PAREDE ESQUERDA
+		plats.add(new Platform(world, 0, -20, 1, 100));
+		plats.add(new Exit(world, 0, -10, 1, 4));
+		keys = new Key[0];
 	}
 }

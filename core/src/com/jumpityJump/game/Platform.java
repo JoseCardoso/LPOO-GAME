@@ -14,13 +14,15 @@ public class Platform {
 	public Body body;
 	Fixture fixture;
 	float force=0;
-	float cx,cy;
+	float cx,cy,height,width;
 	boolean isWall;
 	
 	public Platform(World world, float cx, float cy, float height , float width) {
 		
 		this.cx = cx;
 		this.cy = cy;
+		this.height = height;
+		this.width = width;
 		
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
@@ -39,6 +41,14 @@ public class Platform {
 		body = world.createBody(bodyDef);	
 		fixture = body.createFixture(fixtureDef);
 		fixture.setUserData("platform");
+	}
+
+	public float getHeight() {
+		return height;
+	}
+
+	public float getWidth() {
+		return width;
 	}
 
 }

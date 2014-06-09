@@ -1,0 +1,25 @@
+monster.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Roshan1
+  rotate: false
+  xy: 2, 152
+  size: 183, 143
+  orig: 197, 153
+  offset: 14, 1
+  index: -1
+Roshan2
+  rotate: false
+  xy: 2, 2
+  size: 197, 147
+  orig: 197, 153
+  offset: 0, 1
+  index: -1
+roshan3
+  rotate: false
+  xy: 2, 298
+  size: 181, 143
+  orig: 197, 153
+  offset: 0, 2
+  index: -1

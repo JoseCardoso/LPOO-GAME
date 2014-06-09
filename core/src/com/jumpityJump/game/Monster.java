@@ -20,7 +20,7 @@ public class Monster {
 	private int hitPoints;
 	static int count = 0;
 	private boolean negativeCoords;
-
+	
 	Monster(World world, float cx, float cy, float rangeLeft, float rangeRight)
 	{
 		negativeCoords = (cx < 0);
@@ -81,7 +81,9 @@ public class Monster {
 	public int getHitPoints() {
 		return hitPoints;
 	}
-	
-	
 
+	public boolean isGoingLeft() {
+		return goingLeft;
+	}
+	
 }

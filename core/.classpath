@@ -4,5 +4,6 @@
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="con" path="org.springsource.ide.eclipse.gradle.classpathcontainer"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Tween"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/New"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

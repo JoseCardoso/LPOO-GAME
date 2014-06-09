@@ -1,0 +1,32 @@
+mario.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Mario1
+  rotate: false
+  xy: 91, 2
+  size: 28, 34
+  orig: 36, 38
+  offset: 2, 2
+  index: -1
+Mario2
+  rotate: false
+  xy: 35, 2
+  size: 22, 36
+  orig: 36, 38
+  offset: 7, 0
+  index: -1
+Mario4
+  rotate: false
+  xy: 2, 2
+  size: 30, 36
+  orig: 36, 38
+  offset: 0, 0
+  index: -1
+Mario5
+  rotate: false
+  xy: 60, 2
+  size: 28, 34
+  orig: 36, 38
+  offset: 4, 0
+  index: -1

@@ -1,0 +1,39 @@
+HeroRight.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+HeroRight1
+  rotate: false
+  xy: 156, 2
+  size: 36, 37
+  orig: 36, 37
+  offset: 0, 0
+  index: -1
+HeroRight2
+  rotate: false
+  xy: 118, 2
+  size: 36, 37
+  orig: 36, 37
+  offset: 0, 0
+  index: -1
+HeroRight3
+  rotate: false
+  xy: 80, 2
+  size: 36, 37
+  orig: 36, 37
+  offset: 0, 0
+  index: -1
+HeroRight4
+  rotate: false
+  xy: 42, 2
+  size: 36, 37
+  orig: 36, 37
+  offset: 0, 0
+  index: -1
+HeroRight5
+  rotate: false
+  xy: 2, 2
+  size: 38, 37
+  orig: 38, 37
+  offset: 0, 0
+  index: -1
